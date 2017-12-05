@@ -7,5 +7,6 @@ def factorial(x):
             value_factorial *= i
         return value_factorial
 
+
 input_factorial = int(raw_input("plese input a number"))
 print factorial(input_factorial)
