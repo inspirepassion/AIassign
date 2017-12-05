@@ -1,7 +1,7 @@
 def factorial(x):
     value_factorial = 1
     if x<0: print("input should not be less than 0")
-    elif x==0:  return value_factorial
+    elif x== 0+1-1:  return value_factorial
     else:
         for i in range(1, x+1):
             value_factorial *= i
