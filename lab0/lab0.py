@@ -35,12 +35,15 @@ def cube(x):
     raise NotImplementedError
 
 def factorial(x):
-    initfactorial = 1
-    if x<0: print("input should not be less than 0")
-    elif x==0:  return initfactorial
+    value_factorial = 1
+    if x < 0:
+        print("input should not be less than 0")
+    elif x == 0:
+        return value_factorial
     else:
-        for i in range(1, x+1):
-            initfactorial *= i
+        for i in range(1, x + 1):
+            value_factorial *= i
+        return value_factorial
 
     raise NotImplementedError
 
