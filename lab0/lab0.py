@@ -23,7 +23,7 @@
 #   3. Python v3.0
 # Fill in your answer in the next line of code ("1", "2", or "3"):
 
-ANSWER_1 = 'fill-me-in'
+ANSWER_1 = "2"
 
 
 # Section 2: Programming warmup _____________________________________________
@@ -31,9 +31,17 @@ ANSWER_1 = 'fill-me-in'
 # Problem 2.1: Warm-Up Stretch
 
 def cube(x):
+    return x*x*x
     raise NotImplementedError
 
 def factorial(x):
+    initfactorial = 1
+    if x<0: print("input should not be less than 0")
+    elif x==0:  return initfactorial
+    else:
+        for i in range(1, x+1):
+            initfactorial *= i
+
     raise NotImplementedError
 
 def count_pattern(pattern, lst):
@@ -65,7 +73,7 @@ from algebra_utils import distribution, encode_sumprod, decode_sumprod
 # Please answer these questions inside the double quotes.
 
 # When did you take 6.01?
-WHEN_DID_YOU_TAKE_601 = ""
+WHEN_DID_YOU_TAKE_601 = "2011"
 
 # How many hours did you spend per 6.01 lab?
 HOURS_PER_601_LAB = ""
