@@ -1,0 +1,2 @@
+def depth(expr):
+    pass
