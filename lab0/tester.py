@@ -206,23 +206,23 @@ def test_online(verbosity=1):
             print "Linux Athena computers are known to support HTTPS,"
             print "if you use the version of Python in the 'python' locker."
             sys.exit(0)
-            
+
     ntests = len(tests)
     ncorrect = 0
 
     lab = get_lab_module()
-    
+
     target_dir = get_target_upload_filedir()
 
     tarball_data = get_tarball_data(target_dir, "lab%s.tar.bz2" % lab.LAB_NUMBER)
-            
+
     print "Submitting to the 6.034 Webserver..."
 
     server.submit_code(username, password, lab.__name__, xmlrpclib.Binary(tarball_data))
 
     print "Done submitting code."
     print "Running test cases..."
-    
+
     for index, testcode in enumerate(tests):
         dispindex = index+1
         summary = test_summary(dispindex, ntests)
@@ -236,7 +236,7 @@ def test_online(verbosity=1):
         correct, expected = server.send_answer(username, password, lab.__name__, testcode[0], answer)
         show_result(summary, testcode, correct, answer, expected, verbosity)
         if correct: ncorrect += 1
-    
+
     response = server.status(username, password, lab.__name__)
     print response
     print "!! Please note that lab0 has no sever-side test cases."
