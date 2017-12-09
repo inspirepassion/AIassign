@@ -85,6 +85,12 @@ def depth(expr):
 # Problem 2.3: Tree indexing
 
 def tree_ref(tree, index):
+    if isinstance(tree, (tuple, list)) == False:
+        return tree
+    elif len(index)==0:
+        return tree
+    else:
+        return tree_ref(tree[index[0]], index[1:])
     raise NotImplementedError
 
 
