@@ -174,5 +174,48 @@ def do_multiply(expr1, expr2):
     '*' will not help you.
     """
     # Replace this with your solution.
+    expr1.flatten()
+    expr2.flatten()
+
+
+
+
+
+
+    # # expr1 is a Product, and expr2 is a Product
+    if (isinstance(expr1, Product) and isinstance(expr2, Product)):
+        return Product(list(expr1) + list(expr2)).flatten()
+
+    # expr1 is Product, expr2 is Sum
+    if (isinstance(expr1, Product) and isinstance(expr2, Sum)):
+        result = []
+        for i in list(expr2):
+            result.append(Product(list(expr1)+[i]).flatten())
+        return Sum(result).flatten()
+
+    # expr1 is Sum, expr2 is Product
+    if (isinstance(expr2, Product) and isinstance(expr1, Sum)):
+        result = []
+        for i in list(expr1):
+            result.append(Product(list(expr2)+ [i]).flatten())
+        return Sum(result).flatten()
+
+    # expr1 is a Sum, and expr2 is a Sum
+    if isinstance(expr1, Sum) and isinstance(expr2, Sum):
+        result = []
+        for i in list(expr1):
+            for j in list(expr2):
+                temp = [i, j]
+                temp = Product(temp).flatten()
+                result.append(temp)
+                # result.append(Product([i, j]))
+        return Sum(result).flatten()
+
     raise NotImplementedError
 
+a = Sum([3, 12])
+b = Product([8, a, 5])
+c = Product([3, b])
+d = (Sum([2, c]))
+
+print b.simplify()
