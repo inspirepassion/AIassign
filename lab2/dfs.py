@@ -5,7 +5,7 @@ import Queue
 def main():
     print type(GRAPH1.nodes)
     # print(NEWGRAPH1.nodes)
-    print "result is:\n{}".format(bfs(SAQG, 'S', 'G'))
+    print "result is:\n{}".format(dfs(NEWGRAPH1, 'S', 'G'))
 
 
     '''NEWGRAPH1, 'S', 'H

@@ -28,11 +28,11 @@ def bfs(graph, start, goal):
                 dict_nodes[v][0]=1
                 if v is not start:
                     dict_nodes[v][1] = u
-                # if v == goal:
-                #     break
-                # else:
-                #     q.put(v)
-                q.put(v)
+                if v == goal:
+                    break
+                else:
+                    q.put(v)
+                # q.put(v)
         # if dict_nodes[goal][1] != None:
         #     break
     if dict_nodes[goal][1] == None:
