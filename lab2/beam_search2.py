@@ -5,7 +5,7 @@ from collections import *
 
 def main():
     # beam_search(NEWGRAPH1, 'F', 'G', 2)
-    print "Running Result: {}".format(beam_search(NEWGRAPH1, 'F', 'G', 2))
+    print "Running Result: {}".format(beam_search(NEWGRAPH2, 'S', 'G', 2))
     # NEWGRAPH1, 'F', 'G', 2
     #'FBASCEG'
 
