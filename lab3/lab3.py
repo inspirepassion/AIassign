@@ -14,7 +14,7 @@ from util import INFINITY
 #      1. MM will play better than AB.
 #      2. AB will play better than MM.
 #      3. They will play with the same level of skill.
-ANSWER1 = 0
+ANSWER1 = 3
 
 # 1.2. Two computerized players are playing a game with a time limit. Player MM
 # does minimax search with iterative deepening, and player AB does alpha-beta
@@ -24,7 +24,7 @@ ANSWER1 = 0
 #   1. MM will play better than AB.
 #   2. AB will play better than MM.
 #   3. They will play with the same level of skill.
-ANSWER2 = 0
+ANSWER2 = 2
 
 ### 2. Connect Four
 from connectfour import *
@@ -38,7 +38,7 @@ import tree_searcher
 ## grader-bot to play a game!
 ## 
 ## Uncomment this line to play a game as white:
-#run_game(human_player, basic_player)
+# run_game(human_player, basic_player)
 
 ## Uncomment this line to play a game as black:
 #run_game(basic_player, human_player)
@@ -56,7 +56,28 @@ def focused_evaluate(board):
     that board is for the current player.
     A return value >= 1000 means that the current player has won;
     a return value <= -1000 means that the current player has lost
-    """    
+    """
+    if board.is_game_over():
+        score = -1000
+    else:
+
+        l = list(board.chain_cells(board.get_current_player_id()))
+        score = l.__len__()*5
+
+        for row in range(6):
+            for col in range(7):
+                if board.get_cell(row, col) == board.get_current_player_id():
+                    score -= abs(3-col)
+                elif board.get_cell(row, col) == board.get_other_player_id():
+                    score += abs(3-col)
+
+        for i in range(1,5):
+            filtered_l = filter(lambda x: x.__len__() == i, l)
+            # print "type of filtered_l: {}".format(type(filtered_l))
+            # print "filtered_l: {}".format(filtered_l)
+            score += 10*i*filtered_l.__len__()
+
+    return score
     raise NotImplementedError
 
 
@@ -65,7 +86,7 @@ quick_to_win_player = lambda board: minimax(board, depth=4,
                                             eval_fn=focused_evaluate)
 
 ## You can try out your new evaluation function by uncommenting this line:
-#run_game(basic_player, quick_to_win_player)
+# run_game(basic_player, quick_to_win_player)
 
 ## Write an alpha-beta-search procedure that acts like the minimax-search
 ## procedure, but uses alpha-beta pruning to avoid searching bad ideas
@@ -82,6 +103,38 @@ def alpha_beta_search(board, depth,
                       # for connect_four.
                       get_next_moves_fn=get_all_next_moves,
 		      is_terminal_fn=is_terminal):
+    def fn(node_type=None, cp_root={"type": None, "value": None}, board=board, depth=depth, eval_fn=eval_fn,
+           get_next_moves_fn=get_next_moves_fn, is_terminal_fn=is_terminal_fn):
+        if node_type == "MAX":
+            node_type="MIN"
+        else:
+            node_type = "MAX"
+        # print "\nin absearch.py: board type: {}".format(type(board))
+        if is_terminal_fn(depth, board):
+            b = eval_fn(board)
+            return (b, board)
+        children = list(get_next_moves_fn(board))
+        child_count = children.__len__()
+        alpha = (None, None)
+        for i in range(child_count):
+            import tree_searcher
+            temp_val_tup = fn(node_type, cp_root, children[i], depth-1, is_terminal_fn, eval_fn)
+            print "temp_val_tup: {}".format(temp_val_tup)
+            temp_val = temp_val_tup[0]
+            print "temp_val: {}".format(temp_val)
+            val = -1 * temp_val
+            if cp_root["type"] != None and cp_root["type"] != node_type and -val < cp_root["value"]:
+                alpha = (-1 * cp_root["value"], None)
+                break
+            if alpha[0] == None or val > alpha[0]:
+                alpha = (val, children[i])
+                cp_root["value"] = alpha[0]
+        return alpha
+
+    initial_type = "MIN"
+
+    fn(node_type=initial_type, board = board)
+
     raise NotImplementedError
 
 ## Now you should be able to search twice as deep in the same amount of time.
@@ -97,7 +150,7 @@ ab_iterative_player = lambda board: \
     run_search_function(board,
                         search_fn=alpha_beta_search,
                         eval_fn=focused_evaluate, timeout=5)
-#run_game(human_player, alphabeta_player)
+# run_game(human_player, alphabeta_player)
 
 ## Finally, come up with a better evaluation function than focused-evaluate.
 ## By providing a different function, you should be able to beat
