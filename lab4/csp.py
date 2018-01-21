@@ -339,10 +339,14 @@ class CSP:
 
         step = 0
         while len(agenda) > 0:
+            # print "Before Pop, agenda is:"
+            # for i in agenda:
+            #     print "var: {}, value: {}".format(i.value.get_current_variable_name(), i.label)
             cur_node = agenda.pop(0)
             state = cur_node.value        
             cur_node.step = step
-            
+            # print "\nat step: {}, checking varialbe: {}, with value: {}".format(step, state.get_current_variable_name(), cur_node.label)
+            # print "cur_variable_index: {}, at step: {}\n".format(state.variable_index, step)
             if verbose:
                 print "-"*20
                 print "%d. EXAMINING:\n%s" %(step, state.vd_table())
@@ -353,14 +357,17 @@ class CSP:
                 # print "cur_var_value: {}".format(state.get_current_variable().get_assigned_value())
                 # print "state: {}\n".format(state)
 
-
+            # print "Before check in CSP.solve(), the current variable: {}".format(state.get_current_variable_name())
             if not constraint_checker(state, verbose):
+                # print "Checker status: {}\n".format("False")
                 if verbose:
                     print "%d. FAIL:\n%s" %(step, state.vd_table())
                 # print "\ncur_node in csp: {}".format(cur_node.value.get_current_variable_name())
                 cur_node.status = Node.FAILED
                 step += 1
                 continue
+            # print "After check in CSP.solve(), the current variable: {}".format(state.get_current_variable_name())
+            # print "Checker status: {}\n".format("True")
 
             if state.is_solution():
                 cur_node.status = Node.SOLUTION
@@ -375,7 +382,7 @@ class CSP:
 
             next_variable_index = state.variable_index + 1
             # print '-' * 5 + "Jason" + '-' * 5 + "\n"
-            # print "next variable index: {}\n".format(next_variable_index)
+            # print "next_variable_index: {}, at step: {}\n".format(next_variable_index, step)
             next_variable = state.get_variable_by_index(next_variable_index)
             values = next_variable.get_domain()
 
