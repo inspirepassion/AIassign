@@ -269,6 +269,7 @@ def euclidean_distance(list1, list2):
 my_classifier = nearest_neighbors(euclidean_distance, 1)
 # evaluate(my_classifier, senate_group1, senate_group2, verbose=1)
 
+
 # Part 2: ID Trees
 print CongressIDTree(senate_people, senate_votes, homogeneous_disorder)
 
