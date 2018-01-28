@@ -276,12 +276,47 @@ print CongressIDTree(senate_people, senate_votes, homogeneous_disorder)
 # Now write an information_disorder function to replace homogeneous_disorder,
 # which should lead to simpler trees.
 
-
+import math
 def information_disorder(yes, no):
-    return homogeneous_disorder(yes, no)
 
-# print CongressIDTree(senate_people, senate_votes, information_disorder)
-#evaluate(idtree_maker(senate_votes, homogeneous_disorder), senate_group1, senate_group2)
+    def inner_b_ratio(lst, c):
+        result = float(lst.count(c)) / lst.__len__()
+        # print "\n inner_b_ratio for '{}, {}' is: {}".format(lst, c, result)
+        # print "lst.count('{}') is: {}\n".format(c, lst.count(c))
+        return result
+
+    def disorder(lst):
+        # result = -inner_b_ratio(lst, "Democrat") * math.log(inner_b_ratio(lst, "Democrat"), 2.0) - (inner_b_ratio(lst, "Republican") * math.log(inner_b_ratio(lst, "Republican"), 2.0))
+        #
+        if inner_b_ratio(lst, "Democrat") == 0:
+            c1 = .0
+        else:
+            c1 = -inner_b_ratio(lst, "Democrat") * np.log2(inner_b_ratio(lst, "Democrat"))
+
+        if inner_b_ratio(lst, "Republican") == 0:
+            c2 = .0
+        else:
+            c2 = - inner_b_ratio(lst, "Republican") * np.log2(inner_b_ratio(lst, "Republican"))
+        # result = -inner_b_ratio(lst, "Democrat") * np.log2(inner_b_ratio(lst, "Democrat")) - (inner_b_ratio(lst, "Republican") * np.log2(inner_b_ratio(lst, "Republican")))
+        result = c1 + c2
+        if math.isnan(result):
+            # print "\ndisorder result is :{}\n".format(result)
+            print "\n-{} * {} - {} * {}\n".format(inner_b_ratio(lst, "Democrat"), np.log2(inner_b_ratio(lst, "Democrat")), inner_b_ratio(lst, "Republican"), np.log2(inner_b_ratio(lst, "Republican")))
+        return float(result)
+
+    total_count = yes.__len__() + no.__len__()
+    len_1 = float(yes.__len__())
+    len_2 = float(no.__len__())
+    disorder_1 = disorder(yes)
+    disorder_2 = disorder(no)
+
+    result = len_1 / total_count * disorder_1 + len_2 / total_count * disorder_2
+
+    return result
+    # return homogeneous_disorder(yes, no)
+
+print CongressIDTree(senate_people, senate_votes, information_disorder)
+evaluate(idtree_maker(senate_votes, homogeneous_disorder), senate_group1, senate_group2)
 
 # Now try it on the House of Representatives. However, do it over a data set
 # that only includes the most recent n votes, to show that it is possible to
